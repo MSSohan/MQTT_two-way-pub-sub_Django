@@ -39,7 +39,16 @@ def start_mqtt_client():
 # Start the MQTT client
 start_mqtt_client()
 
-# Example of publishing a message
-publish_message(client, 'uprint/kiosk', 'Hello from server')
+# Continuously take user input and publish it
+try:
+    while True:
+        message = input("Enter a message to publish (or 'exit' to quit): ")
+        if message.lower() == 'exit':
+            break
+        publish_message(client, 'uprint/kiosk', message)
+except KeyboardInterrupt:
+    print("\nExited by user")
 
-# The client will keep running and listening for incoming messages
+# Stop the loop and disconnect the client
+client.loop_stop()
+client.disconnect()
