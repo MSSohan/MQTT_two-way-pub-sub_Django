@@ -13,7 +13,7 @@ This project uses Python 3.8 for development testing, and the reader can confirm
 
 ```
 $ python3 --version
-Python 3.8.2
+Python 3.11.0
 ```
 
 Install Django and `paho-mqtt` using Pip.
