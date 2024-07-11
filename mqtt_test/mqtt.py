@@ -45,7 +45,7 @@ try:
         message = input("Enter a message to publish (or 'exit' to quit): ")
         if message.lower() == 'exit':
             break
-        publish_message(client, 'uprint/kiosk', message)
+        publish_message(client, 'uprint/kiosk/device_id', message)
 except KeyboardInterrupt:
     print("\nExited by user")
 
