@@ -166,7 +166,7 @@ from . import mqtt
 mqtt.client.loop_start()
 ```
 
-At this point, we have finished writing all the code, and the full code can be found at [GitHub](https://github.com/emqx/MQTT-Client-Examples/tree/master/mqtt-client-Django).
+At this point, we have finished writing all the code, and the full code can be found at [GitHub](https://github.com/MSSohan/MQTT-Client-Django).
 
 Finally, execute the following command to run the Django project.
 
