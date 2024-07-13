@@ -16,7 +16,7 @@ def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print('Connected successfully')
         topic = f'uprint/kiosk/{DEVICE_ID}'
-        client.subscribe(topic)
+        client.subscribe(topic, qos=1)
     else:
         print('Bad connection. Code:', rc)
 
@@ -25,7 +25,7 @@ def on_message(client, userdata, msg):
     print(f'Received message on topic: {msg.topic} with payload: {payload}')
 
 def publish_message(client, topic, payload):
-    result = client.publish(topic, payload)
+    result = client.publish(topic, payload, qos=1)
     status = result.rc
     if status == mqtt.MQTT_ERR_SUCCESS:
         print(f"Sent `{payload}` to topic `{topic}`")
