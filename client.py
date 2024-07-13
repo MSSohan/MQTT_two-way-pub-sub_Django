@@ -15,7 +15,8 @@ DEVICE_ID = 'UP12'  # Your device ID
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print('Connected successfully')
-        client.subscribe(f'uprint/kiosk/{DEVICE_ID}')
+        topic = f'uprint/kiosk/{DEVICE_ID}'
+        client.subscribe(topic)
     else:
         print('Bad connection. Code:', rc)
 
