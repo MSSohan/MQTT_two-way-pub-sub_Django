@@ -10,7 +10,18 @@ MQTT_SERVER = 'broker.emqx.io'
 MQTT_PORT = 1883  # Default MQTT port, change if necessary
 MQTT_KEEPALIVE = 60  # Keepalive interval in seconds
 
-DEVICE_ID = 'UP12345'  # Your device ID
+DEVICE_ID = 'UP12'  # Your device ID
+
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print('Connected successfully')
+        client.subscribe(f'uprint/kiosk/{DEVICE_ID}')
+    else:
+        print('Bad connection. Code:', rc)
+
+def on_message(client, userdata, msg):
+    payload = msg.payload.decode()
+    print(f'Received message on topic: {msg.topic} with payload: {payload}')
 
 def publish_message(client, topic, payload):
     result = client.publish(topic, payload)
@@ -22,6 +33,8 @@ def publish_message(client, topic, payload):
 
 # Create an MQTT client instance
 client = mqtt.Client()
+client.on_connect = on_connect
+client.on_message = on_message
 client.username_pw_set(MQTT_USER, MQTT_PASSWORD)
 
 # Connect to the MQTT server
@@ -45,9 +58,10 @@ try:
         }
         # Convert data to JSON
         json_data = json.dumps(data)
+        topic = 'uprint/kiosk'
         # Publish the JSON data
-        publish_message(client, 'uprint/kiosk', json_data)
-        time.sleep(1)
+        publish_message(client, topic, json_data)
+        time.sleep(2)
 except KeyboardInterrupt:
     print("\nExited by user")
 

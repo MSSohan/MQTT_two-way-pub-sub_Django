@@ -1,19 +1,30 @@
 import paho.mqtt.client as mqtt
 from django.conf import settings
+import json
 
 def on_connect(mqtt_client, userdata, flags, rc):
     if rc == 0:
         print('Connected successfully')
-        mqtt_client.subscribe('uprint/kiosk')
+        mqtt_client.subscribe('uprint/kiosk')  # Subscribe to all subtopics
     else:
         print('Bad connection. Code:', rc)
 
 def on_message(mqtt_client, userdata, msg):
     print(f'Received message on topic: {msg.topic} with payload: {msg.payload}')
+    payload = msg.payload.decode()
+    try:
+        data = json.loads(payload)
+        device_id = data['device_id']
+        response_topic = f'uprint/kiosk/{device_id}'
+        response_message = json.dumps({'response': 'Message received', 'device_id': device_id})
+        mqtt_client.publish(response_topic, response_message)
+        print(f"Sent return response '{response_message}' to `{response_topic}`")
+    except (json.JSONDecodeError, KeyError):
+        print("Invalid message format")
 
 def publish_message(mqtt_client, topic, payload):
     result = mqtt_client.publish(topic, payload)
-    status = result[0]
+    status = result.rc
     if status == 0:
         print(f"Sent `{payload}` to topic `{topic}`")
     else:
@@ -45,7 +56,7 @@ try:
         message = input("Enter a message to publish (or 'exit' to quit): ")
         if message.lower() == 'exit':
             break
-        publish_message(client, 'uprint/kiosk/device_id', message)
+        publish_message(client, 'uprint/kiosk', message)
 except KeyboardInterrupt:
     print("\nExited by user")
 
