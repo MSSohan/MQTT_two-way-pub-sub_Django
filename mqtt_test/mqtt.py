@@ -43,24 +43,3 @@ client.connect(
     port=settings.MQTT_PORT,
     keepalive=settings.MQTT_KEEPALIVE
 )
-
-# Function to start the loop in a separate thread
-def start_mqtt_client():
-    client.loop_start()
-
-# Start the MQTT client
-start_mqtt_client()
-
-# Continuously take user input and publish it
-try:
-    while True:
-        message = input("Enter a message to publish (or 'exit' to quit): ")
-        if message.lower() == 'exit':
-            break
-        publish_message(client, 'uprint/kiosk', message)
-except KeyboardInterrupt:
-    print("\nExited by user")
-
-# Stop the loop and disconnect the client
-client.loop_stop()
-client.disconnect()
