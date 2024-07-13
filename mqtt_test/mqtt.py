@@ -6,7 +6,7 @@ def on_connect(mqtt_client, userdata, flags, rc):
     if rc == 0:
         print('Connected successfully')
         topic = 'uprint/kiosk'
-        mqtt_client.subscribe(topic)
+        mqtt_client.subscribe(topic, qos=1)
     else:
         print('Bad connection. Code:', rc)
 
@@ -18,13 +18,13 @@ def on_message(mqtt_client, userdata, msg):
         device_id = data['device_id']
         response_topic = f'uprint/kiosk/{device_id}'
         response_message = json.dumps({'response': 'Message received', 'device_id': device_id})
-        mqtt_client.publish(response_topic, response_message)
+        mqtt_client.publish(response_topic, response_message, qos=1)
         print(f"Sent return response '{response_message}' to `{response_topic}`")
     except (json.JSONDecodeError, KeyError):
         print("Invalid message format")
 
 def publish_message(mqtt_client, topic, payload):
-    result = mqtt_client.publish(topic, payload)
+    result = mqtt_client.publish(topic, payload, qos=1)
     status = result.rc
     if status == 0:
         print(f"Sent `{payload}` to topic `{topic}`")
