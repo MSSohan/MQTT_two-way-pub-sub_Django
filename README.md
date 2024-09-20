@@ -1,4 +1,4 @@
-# MQTT-Client-Django
+# MQTT-Client-Django-With-Core-Python-Two-Way-Communication-Using-Emqx-Broker
 
 [MQTT](https://mqtt.org/) is a lightweight IoT messaging protocol based on publish/subscribe model, which can provide real-time reliable messaging services for connected devices with very little code and bandwidth. It is widely used in industries such as IoT, mobile Internet, smart hardware, [Internet of vehicles](https://www.emqx.com/en/blog/category/internet-of-vehicles), and power and energy.
 
